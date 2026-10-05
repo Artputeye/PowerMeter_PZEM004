@@ -1,0 +1,254 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#188f82">
+  <title>ARTTECH | PZEM Energy Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="flow.css">
+  <link rel="stylesheet" href="chart.css">
+  <link rel="stylesheet" href="pzem-dashboard.css">
+  </head>
+
+<body>
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-mark"><img src="pic/transmission-tower.svg" alt="Power Meter"></div>
+      <div>
+        <h1>ARTTECH</h1>
+        <p class="connection"><span id="connectionDot" class="status-dot offline"></span><span
+            id="connectionText">Connecting</span><span class="separator">|</span><span id="lastUpdate">--:--</span></p>
+      </div>
+    </div>
+    <nav class="top-navigation">
+      <a class="top-navigation-link active" href="dashboard.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M3 10.5 12 3l9 7.5" />
+            <path d="M5 9.5V21h14V9.5" />
+            <path d="M9.5 21v-6h5v6" />
+          </svg></span><span class="nav-label">Dashboard</span></a>
+      <a class="top-navigation-link" href="network.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="m16 16 4.5 4.5" />
+          </svg></span><span class="nav-label">Network</span></a>
+      <a class="top-navigation-link nav-cta" href="setting.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+          </svg></span><span class="nav-label">Setting</span></a>
+      <a class="top-navigation-link" href="ota.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M12 16V4" />
+            <path d="m7.5 8.5 4.5-4.5 4.5 4.5" />
+            <path d="M5 13v6h14v-6" />
+          </svg></span><span class="nav-label">OTA</span></a>
+      <a class="top-navigation-link" href="console.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="3.2" />
+            <path d="M5.5 20c.8-4 3-6 6.5-6s5.7 2 6.5 6" />
+          </svg></span><span class="nav-label">Console</span></a>
+    </nav>
+  </header>
+  <div class="app-shell">
+    <main class="dashboard">
+      <section class="page-intro">
+        <div>
+          <p class="overline">PZEM-004T ENERGY MONITOR</p>
+          <h2>Eelectric City</h2>
+        </div>
+        <div class="date-chip"><span id="currentDate">--</span></div>
+      </section>
+
+      <section class="metrics-grid">
+
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-icon">E</span>
+            <p class="overline">ENERGY TODAY</p>
+          </div>
+          <div class="metric-value"><span id="energyToday">--</span> <small>kWh</small></div>
+          <p class="metric-note">Calculated from PZEM energy delta</p>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-icon">E</span>
+            <p class="overline">ENERGY THIS MONTH</p>
+          </div>
+          <div class="metric-value"><span id="energyMonth">--</span> <small>kWh</small></div>
+          <p class="metric-note">Calendar month total</p>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-icon">T</span>
+            <p class="overline">PZEM TOTAL</p>
+          </div>
+
+          <div class="metric-value"><span id="energyTotal">--</span> <small>kWh</small></div>
+          <p class="metric-note">Meter accumulated energy</p>  
+        </article>
+        
+        <article class="metric-card">
+          <div class="metric-top"><span class="metric-icon">?</span>
+            <p class="overline">EST. BILL THIS MONTH</p>
+          </div>
+          <div class="metric-value"><span id="estimatedBill">--</span> <small>THB</small></div>
+          <p class="metric-note">Based on PZEM monthly energy</p>
+        </article>
+      </section>
+      <section class="load-output-section">
+        <article class="panel load-panel">
+          <div class="panel-heading-center">
+            <p class="overline">LOAD PERFORMANCE</p>
+          </div>
+          <div class="gauge-wrapper">
+            <div class="gauge-circle"><svg viewBox="0 0 100 100" class="gauge-svg">
+                <circle class="gauge-bg" cx="50" cy="50" r="42"></circle>
+                <circle id="loadGaugeCircle" class="gauge-progress offline" cx="50" cy="50" r="42"
+                  style="stroke-dasharray:263.89;stroke-dashoffset:263.89"></circle>
+              </svg>
+              <div class="gauge-data">
+                <p class="overline">POWER</p>
+                <div class="value"><span id="loadGaugePower">--</span><span> W</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="load-stats">
+            <div class="load-stats-row"><span class="lbl">Voltage</span><span class="val"><span
+                  id="voltageStat">--</span> V</span></div>
+            <div class="load-stats-row"><span class="lbl">Current</span><span class="val"><span
+                  id="currentStat">--</span> A</span></div>
+            <div class="load-stats-row"><span class="lbl">Power factor</span><span class="val"><span
+                  id="pfStat">--</span></span></div>
+          </div>
+        </article>
+        <article class="panel performance-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="overline">LIVE ELECTRICAL PARAMETERS</p>
+              <h2>PZEM-004T v3.0</h2>
+            </div><span class="live-label"><span class="live-dot"></span>LIVE</span>
+          </div>
+          <div class="perf-grid">
+            <div class="perf-card offline" id="voltageCard">
+              <p class="overline">Voltage</p>
+              <div class="value"><span id="voltage">--</span> <small>V</small></div>
+              <div class="perf-sub-label">AC voltage</div>
+            </div>
+            <div class="perf-card offline" id="currentCard">
+              <p class="overline">Current</p>
+              <div class="value"><span id="current">--</span> <small>A</small></div>
+              <div class="perf-sub-label">AC current</div>
+            </div>
+            <div class="perf-card offline" id="powerCard">
+              <p class="overline">Active Power</p>
+              <div class="value"><span id="power">--</span> <small>W</small></div>
+              <div class="perf-sub-label">Real power</div>
+            </div>
+            <div class="perf-card offline" id="frequencyCard">
+              <p class="overline">Frequency</p>
+              <div class="value"><span id="frequency">--</span> <small>Hz</small></div>
+              <div class="perf-sub-label">AC frequency</div>
+            </div>
+            <div class="perf-card offline" id="pfCard">
+              <p class="overline">Power Factor</p>
+              <div class="value"><span id="pf">--</span> <small>PF</small></div>
+              <div class="perf-sub-label">Real / apparent power</div>
+            </div>
+            <div class="perf-card offline" id="statusCard">
+              <p class="overline">METER STATUS</p>
+              <div class="value" id="valid">--</div>
+              <div class="perf-sub-label">PZEM telemetry</div>
+            </div>
+          </div>
+        </article>
+      </section>
+      <section class="charts-grid">
+        <article class="panel chart-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="overline">ENERGY HISTORY</p>
+              <h2>Consumption by period</h2>
+            </div><span class="chart-total"><span id="historyTotal">--</span> <small>kWh</small></span>
+          </div>
+          <div class="chart-history-tools">
+            <div class="energy-history-range"><button class="active" data-range="hourly">24H</button><button
+                data-range="daily">30D</button><button data-range="monthly">12M</button></div><span
+              class="history-status" id="historyStatus">Loading...</span>
+          </div>
+          <div class="chart-wrap"><canvas id="energyChart"></canvas>
+            <div class="chart-empty" id="energyChartEmpty">Waiting for energy history</div>
+          </div>
+        </article>
+        <article class="panel chart-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="overline">POWER HISTORY</p>
+              <h2>Active power - last 60 minutes</h2>
+            </div><span class="chart-total"><span id="powerPeak">--</span> <small>W peak</small></span>
+          </div>
+          <div class="chart-wrap"><canvas id="powerChart"></canvas>
+            <div class="chart-empty" id="powerChartEmpty">Collecting samples every minute</div>
+          </div>
+        </article>
+      </section>
+      <section class="three-column-grid">
+        <article class="panel insights-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="overline">ENERGY INSIGHTS</p>
+              <h2>Current electrical state</h2>
+            </div>
+          </div>
+          <div class="insights-content">
+            <div class="insight-metric">
+              <p class="overline">ACTIVE POWER</p>
+              <div class="highlight"><span id="insightPower">--</span> <small>W</small></div>
+            </div>
+            <div class="insight-row">
+              <div>
+                <p class="overline">Voltage</p><strong><span id="insightVoltage">--</span> V</strong>
+              </div>
+              <div>
+                <p class="overline">Current</p><strong><span id="insightCurrent">--</span> A</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="panel status-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="overline">SYSTEM STATUS</p>
+              <h2 id="systemStatusTitle">Waiting for telemetry</h2>
+            </div><span id="systemStatusBadge" class="status-badge offline">NO DATA</span>
+          </div>
+          <div class="status-list">
+            <div class="status-item"><span class="status-name">PZEM telemetry</span>
+              <div class="status-value offline" id="telemetryStatus"><span id="telemetryText">Offline</span><span
+                  class="status-lamp"></span></div>
+            </div>
+            <div class="status-item"><span class="status-name">WiFi / WebSocket</span>
+              <div class="status-value offline" id="wsStatus"><span id="wsText">Disconnected</span><span
+                  class="status-lamp"></span></div>
+            </div>
+            <div class="status-item"><span class="status-name">History storage</span>
+              <div class="status-value online"><span>LittleFS</span><span class="status-lamp"></span></div>
+            </div>
+          </div>
+        </article>
+        <article class="panel benefit-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="overline">METER SUMMARY</p>
+              <h2>Energy counters</h2>
+            </div>
+          </div>
+          <div class="benefit-list">
+            <div><span>Today</span><strong><span id="summaryToday">--</span> kWh</strong></div>
+            <div><span>This month</span><strong><span id="summaryMonth">--</span> kWh</strong></div>
+            <div><span>Total meter</span><strong><span id="summaryTotal">--</span> kWh</strong></div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="dashboard.js"></script>
+</body>
+
+</html>
+

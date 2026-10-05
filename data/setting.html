@@ -1,0 +1,148 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#188f82">
+  <title>ARTTECH | Expense Settings</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="setting.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-mark"><img src="pic/transmission-tower.svg" alt="Power Meter"></div>
+      <div>
+        <h1>ARTTECH</h1>
+        <p class="connection"><span class="status-dot"></span>PowerMeter settings</p>
+      </div>
+    </div>
+
+    <nav class="top-navigation">
+      <a class="top-navigation-link" href="dashboard.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M3 10.5 12 3l9 7.5" />
+            <path d="M5 9.5V21h14V9.5" />
+            <path d="M9.5 21v-6h5v6" />
+          </svg></span><span class="nav-label">Dashboard</span></a>
+
+      <a class="top-navigation-link" href="network.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="m16 16 4.5 4.5" />
+          </svg></span><span class="nav-label">Network</span></a>
+
+      <a class="top-navigation-link nav-cta active" href="setting.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+          </svg></span><span class="nav-label">Setting</span></a>
+
+      <a class="top-navigation-link" href="ota.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M12 16V4" />
+            <path d="m7.5 8.5 4.5-4.5 4.5 4.5" />
+            <path d="M5 13v6h14v-6" />
+          </svg></span><span class="nav-label">OTA</span></a>
+
+      <a class="top-navigation-link" href="console.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="3.2" />
+            <path d="M5.5 20c.8-4 3-6 6.5-6s5.7 2 6.5 6" />
+          </svg></span><span class="nav-label">Console</span></a>
+    </nav>
+  </header>
+
+  <div class="app-shell">
+    <main class="dashboard expense-settings-page">
+      <section class="page-intro">
+        <div>
+          <p class="overline">POWER METER</p>
+          <h2>Expense Settings</h2>
+        </div>
+      </section>
+
+      <section class="settings-panel expense-settings-panel" id="expenseSettingsView" role="tabpanel"
+        aria-labelledby="expenseTab">
+        <header class="settings-header">
+          <div class="settings-title">
+            <p class="overline">CONFIGURATION</p>
+            <h2>Expense Settings</h2>
+          </div>
+        </header>
+
+        <div class="settings-content">
+          <article class="setting-card">
+            <h3 class="setting-label">Electricity Rate Tier 1 (1 - <span id="tier1RangeText">200</span> Units)</h3>
+            <div class="setting-row">
+              <label class="input-sublabel">
+                <span>Unit Limit (kWh)</span>
+                <input class="schedule-input" type="number" id="UnitCost1" min="0" step="1" placeholder="200" oninput="updateTierLabelsUI()" />
+              </label>
+              <label class="input-sublabel">
+                <span>Price (THB/kWh)</span>
+                <input class="schedule-input" type="number" id="PriceCost1" min="0" step="0.0001" placeholder="3.0000" />
+              </label>
+            </div>
+          </article>
+
+          <article class="setting-card">
+            <h3 class="setting-label">Electricity Rate Tier 2 (<span id="tier2StartText">201</span> - <span id="tier2EndText">400</span> Units)</h3>
+            <div class="setting-row">
+              <label class="input-sublabel">
+                <span>Unit Limit (kWh)</span>
+                <input class="schedule-input" type="number" id="UnitCost2" min="0" step="1" placeholder="400" oninput="updateTierLabelsUI()" />
+              </label>
+              <label class="input-sublabel">
+                <span>Price (THB/kWh)</span>
+                <input class="schedule-input" type="number" id="PriceCost2" min="0" step="0.0001" placeholder="4.1584" />
+              </label>
+            </div>
+          </article>
+
+          <article class="setting-card">
+            <h3 class="setting-label">Electricity Rate Tier 3 (Above <span id="tier3StartText">400</span> Units)</h3>
+            <div class="setting-row">
+              <label class="input-sublabel">
+                <span>Price (THB/kWh)</span>
+                <input class="schedule-input" type="number" id="PriceCost3" min="0" step="0.0001" placeholder="4.3583" />
+              </label>
+            </div>
+          </article>
+
+          <article class="setting-card">
+            <h3 class="setting-label">Solar & Variable Charges</h3>
+            <div class="setting-row">
+              <label class="input-sublabel">
+                <span>Solar Unit (Wp / kWh)</span>
+                <input class="schedule-input" type="number" id="UnitSolar" min="0" step="1" placeholder="450" />
+              </label>
+              <label class="input-sublabel">
+                <span>FT Charge (THB/kWh)</span>
+                <input class="schedule-input" type="number" id="ft" step="0.0001" placeholder="0.3972" />
+              </label>
+            </div>
+          </article>
+
+          <article class="setting-card">
+            <h3 class="setting-label">Fixed & Tax Rates</h3>
+            <div class="setting-row">
+              <label class="input-sublabel">
+                <span>Service Fee (THB/Month)</span>
+                <input class="schedule-input" type="number" id="ServiceFee" min="0" step="0.01" placeholder="38.22" />
+              </label>
+              <label class="input-sublabel">
+                <span>VAT Rate (%)</span>
+                <input class="schedule-input" type="number" id="VatRate" min="0" max="100" step="0.1" placeholder="7" />
+              </label>
+            </div>
+          </article>
+
+          <div class="settings-actions">
+            <button class="setting-button" type="button" onclick="saveExpenseSettings()">Save Expense</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="setting.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+#include "energy_history.h"
+#include "config.h"
+#include <ArduinoJson.h>
+#include <LittleFS.h>
+#include <time.h>
+
+namespace {
+constexpr size_t HOURLY_COUNT = 24;
+constexpr size_t DAILY_COUNT = 30;
+constexpr size_t MONTHLY_COUNT = 12;
+constexpr size_t POWER_COUNT = 60;
+constexpr unsigned long SAVE_INTERVAL_MS = 15UL * 60UL * 1000UL;
+constexpr unsigned long POWER_SAMPLE_INTERVAL_MS = 60UL * 1000UL;
+const char* HISTORY_FILE = "/energy_history.json";
+
+float hourly[HOURLY_COUNT] = {};
+float daily[DAILY_COUNT] = {};
+float monthly[MONTHLY_COUNT] = {};
+float powerHistory[POWER_COUNT] = {};
+
+float lastEnergy = NAN;
+unsigned long lastSaveMs = 0;
+unsigned long lastPowerSampleMs = 0;
+int64_t lastHourKey = 0;
+int64_t lastDayKey = 0;
+int64_t lastMonthKey = 0;
+bool calendarReady = false;
+portMUX_TYPE historyMux = portMUX_INITIALIZER_UNLOCKED;
+
+void clearArray(float* values, size_t count) {
+    for (size_t i = 0; i < count; ++i) values[i] = 0.0f;
+}
+
+void shiftAppend(float* values, size_t count, float value) {
+    for (size_t i = 0; i + 1 < count; ++i) values[i] = values[i + 1];
+    values[count - 1] = value;
+}
+
+void shiftBuckets(int64_t hourDelta, int64_t dayDelta, int64_t monthDelta) {
+    if (hourDelta > 0) {
+        if (hourDelta >= static_cast<int64_t>(HOURLY_COUNT)) clearArray(hourly, HOURLY_COUNT);
+        else {
+            const size_t shift = static_cast<size_t>(hourDelta);
+            for (size_t i = 0; i < HOURLY_COUNT - shift; ++i) hourly[i] = hourly[i + shift];
+            for (size_t i = HOURLY_COUNT - shift; i < HOURLY_COUNT; ++i) hourly[i] = 0.0f;
+        }
+    }
+    if (dayDelta > 0) {
+        if (dayDelta >= static_cast<int64_t>(DAILY_COUNT)) clearArray(daily, DAILY_COUNT);
+        else {
+            const size_t shift = static_cast<size_t>(dayDelta);
+            for (size_t i = 0; i < DAILY_COUNT - shift; ++i) daily[i] = daily[i + shift];
+            for (size_t i = DAILY_COUNT - shift; i < DAILY_COUNT; ++i) daily[i] = 0.0f;
+        }
+    }
+    if (monthDelta > 0) {
+        if (monthDelta >= static_cast<int64_t>(MONTHLY_COUNT)) clearArray(monthly, MONTHLY_COUNT);
+        else {
+            const size_t shift = static_cast<size_t>(monthDelta);
+            for (size_t i = 0; i < MONTHLY_COUNT - shift; ++i) monthly[i] = monthly[i + shift];
+            for (size_t i = MONTHLY_COUNT - shift; i < MONTHLY_COUNT; ++i) monthly[i] = 0.0f;
+        }
+    }
+}
+
+bool getCalendarKeys(int64_t& hourKey, int64_t& dayKey, int64_t& monthKey) {
+    const time_t now = time(nullptr);
+    if (now < 1577836800) return false;
+
+    struct tm local{};
+    localtime_r(&now, &local);
+    hourKey = static_cast<int64_t>(now / 3600);
+    dayKey = static_cast<int64_t>(now / 86400);
+    monthKey = static_cast<int64_t>(local.tm_year + 1900) * 12 + local.tm_mon;
+    return true;
+}
+
+void saveHistory() {
+    JsonDocument doc;
+    doc["version"] = 2;
+    doc["hour_key"] = lastHourKey;
+    doc["day_key"] = lastDayKey;
+    doc["month_key"] = lastMonthKey;
+
+    JsonArray h = doc["hourly"].to<JsonArray>();
+    JsonArray d = doc["daily"].to<JsonArray>();
+    JsonArray m = doc["monthly"].to<JsonArray>();
+
+    portENTER_CRITICAL(&historyMux);
+    for (size_t i = 0; i < HOURLY_COUNT; ++i) h.add(hourly[i]);
+    for (size_t i = 0; i < DAILY_COUNT; ++i) d.add(daily[i]);
+    for (size_t i = 0; i < MONTHLY_COUNT; ++i) m.add(monthly[i]);
+    portEXIT_CRITICAL(&historyMux);
+
+    File file = FILESYSTEM.open(HISTORY_FILE, FILE_WRITE);
+    if (!file) return;
+    serializeJson(doc, file);
+    file.close();
+}
+
+void loadHistory() {
+    if (!FILESYSTEM.exists(HISTORY_FILE)) return;
+    File file = FILESYSTEM.open(HISTORY_FILE, FILE_READ);
+    if (!file) return;
+
+    JsonDocument doc;
+    if (deserializeJson(doc, file)) {
+        file.close();
+        return;
+    }
+    file.close();
+
+    portENTER_CRITICAL(&historyMux);
+    clearArray(hourly, HOURLY_COUNT);
+    clearArray(daily, DAILY_COUNT);
+    clearArray(monthly, MONTHLY_COUNT);
+
+    JsonArrayConst h = doc["hourly"].as<JsonArrayConst>();
+    JsonArrayConst d = doc["daily"].as<JsonArrayConst>();
+    JsonArrayConst m = doc["monthly"].as<JsonArrayConst>();
+
+    for (size_t i = 0; i < min(h.size(), HOURLY_COUNT); ++i) hourly[i] = max(0.0f, h[i].as<float>());
+    for (size_t i = 0; i < min(d.size(), DAILY_COUNT); ++i) daily[i] = max(0.0f, d[i].as<float>());
+    for (size_t i = 0; i < min(m.size(), MONTHLY_COUNT); ++i) monthly[i] = max(0.0f, m[i].as<float>());
+
+    lastHourKey = doc["hour_key"] | 0LL;
+    lastDayKey = doc["day_key"] | 0LL;
+    lastMonthKey = doc["month_key"] | 0LL;
+    calendarReady = lastHourKey != 0 && lastDayKey != 0 && lastMonthKey != 0;
+    portEXIT_CRITICAL(&historyMux);
+}
+}
+
+void energyHistoryInit() {
+    loadHistory();
+    lastSaveMs = millis();
+    lastPowerSampleMs = millis();
+    lastEnergy = NAN;
+}
+
+void energyHistoryUpdate(float totalEnergyKWh) {
+    if (!isfinite(totalEnergyKWh) || totalEnergyKWh < 0.0f) return;
+
+    int64_t hourKey, dayKey, monthKey;
+    if (!getCalendarKeys(hourKey, dayKey, monthKey)) return;
+
+    float delta = 0.0f;
+    if (isfinite(lastEnergy) && totalEnergyKWh >= lastEnergy) {
+        delta = totalEnergyKWh - lastEnergy;
+    }
+    lastEnergy = totalEnergyKWh;
+
+    bool saveNow = false;
+
+    portENTER_CRITICAL(&historyMux);
+    if (!calendarReady) {
+        lastHourKey = hourKey;
+        lastDayKey = dayKey;
+        lastMonthKey = monthKey;
+        calendarReady = true;
+    } else {
+        const int64_t hourDelta = hourKey - lastHourKey;
+        const int64_t dayDelta = dayKey - lastDayKey;
+        const int64_t monthDelta = monthKey - lastMonthKey;
+
+        if (hourDelta > 0 || dayDelta > 0 || monthDelta > 0) {
+            shiftBuckets(hourDelta, dayDelta, monthDelta);
+            lastHourKey = hourKey;
+            lastDayKey = dayKey;
+            lastMonthKey = monthKey;
+        }
+    }
+
+    hourly[HOURLY_COUNT - 1] += delta;
+    daily[DAILY_COUNT - 1] += delta;
+    monthly[MONTHLY_COUNT - 1] += delta;
+
+    const unsigned long nowMs = millis();
+    if (nowMs - lastSaveMs >= SAVE_INTERVAL_MS) {
+        lastSaveMs = nowMs;
+        saveNow = true;
+    }
+    portEXIT_CRITICAL(&historyMux);
+
+    if (saveNow) saveHistory();
+}
+
+void energyHistoryRecordPower(float powerW) {
+    if (!isfinite(powerW)) return;
+
+    const unsigned long nowMs = millis();
+    if (nowMs - lastPowerSampleMs < POWER_SAMPLE_INTERVAL_MS) return;
+    lastPowerSampleMs = nowMs;
+
+    portENTER_CRITICAL(&historyMux);
+    shiftAppend(powerHistory, POWER_COUNT, max(0.0f, powerW));
+    portEXIT_CRITICAL(&historyMux);
+}
+
+void buildEnergyHistoryJson(String& out) {
+    JsonDocument doc;
+    JsonArray h = doc["hourly"].to<JsonArray>();
+    JsonArray d = doc["daily"].to<JsonArray>();
+    JsonArray m = doc["monthly"].to<JsonArray>();
+    JsonArray p = doc["power"].to<JsonArray>();
+
+    portENTER_CRITICAL(&historyMux);
+    for (size_t i = 0; i < HOURLY_COUNT; ++i) h.add(hourly[i]);
+    for (size_t i = 0; i < DAILY_COUNT; ++i) d.add(daily[i]);
+    for (size_t i = 0; i < MONTHLY_COUNT; ++i) m.add(monthly[i]);
+    for (size_t i = 0; i < POWER_COUNT; ++i) p.add(powerHistory[i]);
+    portEXIT_CRITICAL(&historyMux);
+
+    serializeJson(doc, out);
+}

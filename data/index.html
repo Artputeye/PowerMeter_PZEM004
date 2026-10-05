@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PowerMeter PZEM-004T</title>
+<style>body{font-family:Arial,sans-serif;max-width:900px;margin:2rem auto;padding:0 1rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}.card{padding:1rem;border:1px solid #ddd;border-radius:12px}.value{font-size:1.8rem;font-weight:700}</style>
+</head><body><h1>PowerMeter PZEM-004T</h1><div class="grid">
+<div class="card">Voltage<div class="value" id="voltage">-- V</div></div>
+<div class="card">Current<div class="value" id="current">-- A</div></div>
+<div class="card">Power<div class="value" id="power">-- W</div></div>
+<div class="card">Energy<div class="value" id="energy">-- kWh</div></div>
+<div class="card">Frequency<div class="value" id="frequency">-- Hz</div></div>
+<div class="card">Power Factor<div class="value" id="pf">--</div></div>
+</div>
+<script>
+const set=(id,v,u='')=>document.getElementById(id).textContent=(Number.isFinite(v)?v.toFixed(2):'--')+' '+u;
+const update=d=>{set('voltage',d.voltage,'V');set('current',d.current,'A');set('power',d.power,'W');set('energy',d.energy,'kWh');set('frequency',d.frequency,'Hz');set('pf',d.pf,'');};
+const ws=new WebSocket('ws://'+location.host+'/ws'); ws.onmessage=e=>{try{update(JSON.parse(e.data))}catch(_){}};
+fetch('/api/pzem').then(r=>r.json()).then(update).catch(()=>{});
+</script></body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARTTECH | Firmware Update</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="ota.css" />
+</head>
+<body>
+  <!-- 1. Dashboard shell and navigation -->
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-mark"><img src="pic/transmission-tower.svg" alt="Power Meter"></div>
+      <div>
+        <h1>ARTTECH</h1>
+        <p class="connection"><span class="status-dot"></span>Firmware update</p>
+      </div>
+    </div>
+
+    <nav class="top-navigation">
+      <a class="top-navigation-link" href="dashboard.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M3 10.5 12 3l9 7.5" />
+            <path d="M5 9.5V21h14V9.5" />
+            <path d="M9.5 21v-6h5v6" />
+          </svg></span><span class="nav-label">Dashboard</span></a>
+
+      <a class="top-navigation-link" href="network.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="m16 16 4.5 4.5" />
+          </svg></span><span class="nav-label">Network</span></a>
+
+      <a class="top-navigation-link nav-cta" href="setting.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+          </svg></span><span class="nav-label">Setting</span></a>
+
+      <a class="top-navigation-link active" href="ota.html" aria-current="page"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M12 16V4" />
+            <path d="m7.5 8.5 4.5-4.5 4.5 4.5" />
+            <path d="M5 13v6h14v-6" />
+          </svg></span><span class="nav-label">OTA</span></a>
+
+      <a class="top-navigation-link" href="console.html"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="3.2" />
+            <path d="M5.5 20c.8-4 3-6 6.5-6s5.7 2 6.5 6" />
+          </svg></span><span class="nav-label">Console</span></a>
+    </nav>
+  </header>
+
+  <div class="app-shell">
+    <main class="dashboard ota-page">
+      <!-- 2. Page heading -->
+      <section class="page-intro">
+        <div>
+          <p class="overline">DEVICE MAINTENANCE</p>
+          <h2>OTA firmware update</h2>
+        </div>
+      </section>
+
+      <!-- 3. Firmware update workflow -->
+      <section class="ota-panel" aria-labelledby="ota-panel-title">
+        <header class="ota-header">
+          <div>
+            <p class="overline">CONFIGURATION</p>
+            <h2 id="ota-panel-title">Update image</h2>
+          </div>
+        </header>
+
+        <div class="ota-content">
+          <!-- 3.1 Target partition -->
+          <section class="ota-card" aria-labelledby="partition-label">
+            <label class="ota-label" id="partition-label" for="type">Target partition</label>
+            <select id="type" class="ota-select">
+              <option value="otafirmware">Firmware image (.bin)</option>
+              <option value="otalittlefs">LittleFS filesystem (.bin)</option>
+            </select>
+          </section>
+
+          <!-- 3.2 Upload source -->
+          <fieldset class="ota-card ota-source-card">
+            <legend class="ota-label">Upload source</legend>
+            <div class="ota-source-options">
+              <label class="ota-source-option">
+                <input type="radio" name="uploadMode" id="radioFile" checked>
+                <span>Single file</span>
+              </label>
+              <label class="ota-source-option">
+                <input type="radio" name="uploadMode" id="radioFolder">
+                <span>Directory folder</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- 3.3 Payload selection -->
+          <section class="ota-card" aria-labelledby="payload-title">
+            <h3 class="ota-label" id="payload-title">Select payload</h3>
+            <div id="fileInputGroup" class="ota-file-group">
+              <label class="ota-file-picker">
+                <input type="file" id="file" multiple>
+                <span>Browse binaries</span>
+              </label>
+            </div>
+            <div id="folderInputGroup" class="ota-file-group" hidden>
+              <label class="ota-file-picker">
+                <input type="file" id="folder" webkitdirectory multiple>
+                <span>Browse folder</span>
+              </label>
+            </div>
+            <p id="file-name" class="ota-file-name" aria-live="polite">No file chosen</p>
+          </section>
+
+          <!-- 3.4 Upload progress and action -->
+          <section class="ota-card" aria-labelledby="flash-title">
+            <h3 class="ota-label" id="flash-title">Flash execution</h3>
+            <button class="ota-upload-button" id="upload-button" type="button">Start flashing</button>
+            <div class="ota-progress-wrap">
+              <progress id="progress" max="100" value="0" aria-label="Upload progress"></progress>
+              <output id="progress-value" for="progress">0%</output>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="ota.js"></script>
+</body>
+</html>

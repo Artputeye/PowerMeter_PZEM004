@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ARTTECH | Console</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="console.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-mark"><img src="pic/transmission-tower.svg" alt="Power Meter"></div>
+      <div><h1>ARTTECH</h1><p class="connection"><span class="status-dot"></span>Device console</p></div>
+    </div>
+    <nav class="top-navigation" aria-label="Primary navigation">
+      <a class="top-navigation-link" href="dashboard.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg></span><span class="nav-label">Dashboard</span></a>
+      <a class="top-navigation-link" href="network.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></span><span class="nav-label">Network</span></a>
+      <a class="top-navigation-link nav-cta" href="setting.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span class="nav-label">Setting</span></a>
+      <a class="top-navigation-link" href="ota.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M5 13v6h14v-6"/></svg></span><span class="nav-label">OTA</span></a>
+      <a class="top-navigation-link active" href="console.html" aria-current="page"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 6h14v12H5z"/><path d="m8 10 3 2-3 2M13 14h3"/></svg></span><span class="nav-label">Console</span></a>
+    </nav>
+  </header>
+  <div class="app-shell">
+    <main class="dashboard console-page">
+      <section class="page-intro"><div><p class="overline">DEVICE DIAGNOSTICS</p><h2>Console</h2></div></section>
+      <section class="console-panel" aria-labelledby="console-title">
+        <header class="console-info-header">
+          <div><p class="overline">REAL-TIME STREAM</p><h2 id="console-title">PowerMeter terminal</h2></div>
+          <span class="connection-state" id="connectionState"><span class="connection-indicator"></span><span id="connectionLabel">Connecting</span></span>
+        </header>
+        <div class="console-content">
+          <section class="console-card">
+            <header class="console-header"><h3>Live output</h3><button class="console-clear" id="clearBtn" type="button">Clear</button></header>
+            <div class="terminal" id="terminal" role="log"><p class="terminal-empty" id="terminalEmpty">Waiting for device messages...</p></div>
+          </section>
+          <form class="console-command" id="commandForm">
+            <input class="command-input" type="text" id="messageInput" placeholder="Enter command" autocomplete="off" aria-label="Command">
+            <button class="command-send" id="sendBtn" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="console.js"></script>
+</body>
+</html>
