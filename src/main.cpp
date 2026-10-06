@@ -1,4 +1,11 @@
 #include "config.h"
+#include "app_main.h"
+#include "ha_integration.h"
+#include "logger.h"
+#include "network_manager.h"
+#include "time_sync.h"
+#include "ui_indicator.h"
+#include "websocket_handler.h"
 
 void TaskMain(void *pvParameters);
 void TaskNetwork(void *pvParameters);
@@ -6,7 +13,8 @@ void TaskNetwork(void *pvParameters);
 void setup()
 {
     pinMode(STATUS_LED, OUTPUT);
-    digitalWrite(STATUS_LED, HIGH);
+    digitalWrite(STATUS_LED, LOW);
+    ledMode = LED_DISCONNECTED;
 
     Serial.begin(115200);
     delay(500);
@@ -42,6 +50,7 @@ void TaskMain(void *pvParameters)
     for (;;)
     {
         app_loop();
+        ledPatternSelect();
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 }

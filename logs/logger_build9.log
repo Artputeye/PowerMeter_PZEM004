@@ -1,0 +1,93 @@
+Processing esp32dev (platform: espressif32@~6.0.0; board: esp32dev; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32dev.html
+PLATFORM: Espressif 32 (6.0.1) > Espressif ESP32 Dev Module
+HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20006.221224 (2.0.6) 
+ - tool-esptoolpy @ 1.40400.0 (4.4.0) 
+ - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- WiFiManager @ 2.0.17
+|-- ArduinoJson @ 7.4.2
+|-- ESPAsyncWebServer @ 3.6.0
+|-- AsyncTCP @ 3.4.9
+|-- PZEM-004T-v30 @ 1.1.2
+|-- PubSubClient @ 2.8.0
+|-- ESPmDNS @ 2.0.0
+|-- LittleFS @ 2.0.0
+|-- Update @ 2.0.0
+|-- WiFi @ 2.0.0
+Building in release mode
+Compiling .pio\build\esp32dev\src\app_main.cpp.o
+Compiling .pio\build\esp32dev\src\config.cpp.o
+Compiling .pio\build\esp32dev\src\energy_history.cpp.o
+Compiling .pio\build\esp32dev\src\expense_manager.cpp.o
+Compiling .pio\build\esp32dev\src\ha_integration.cpp.o
+Compiling .pio\build\esp32dev\src\http_server.cpp.o
+Compiling .pio\build\esp32dev\src\logger.cpp.o
+Compiling .pio\build\esp32dev\src\main.cpp.o
+Compiling .pio\build\esp32dev\src\network_manager.cpp.o
+src/ha_integration.cpp:1:28: warning: extra tokens at end of #include directive
+ #include "ha_integration.h"\n#include "config.h"\n#include "logger.h"
+                            ^
+Compiling .pio\build\esp32dev\src\ota_update.cpp.o
+Compiling .pio\build\esp32dev\src\pzem_monitor.cpp.o
+Compiling .pio\build\esp32dev\src\storage_manager.cpp.o
+Compiling .pio\build\esp32dev\src\time_sync.cpp.o
+Compiling .pio\build\esp32dev\src\websocket_handler.cpp.o
+src/time_sync.cpp:2:20: warning: extra tokens at end of #include directive
+ #include "config.h"\n#include "logger.h"
+                    ^
+src/http_server.cpp:2:20: warning: extra tokens at end of #include directive
+ #include "config.h"\n#include "logger.h"
+                    ^
+src/network_manager.cpp:2:20: warning: extra tokens at end of #include directive
+ #include "config.h"\n#include "logger.h"
+                    ^
+src/pzem_monitor.cpp:2:20: warning: extra tokens at end of #include directive
+ #include "config.h"\n#include "logger.h"
+                    ^
+src/storage_manager.cpp:2:20: warning: extra tokens at end of #include directive
+ #include "config.h"\n#include "logger.h"
+                    ^
+src/websocket_handler.cpp:2:20: warning: extra tokens at end of #include directive
+ #include "config.h"\n#include "logger.h"
+                    ^
+src/logger.cpp: In function 'void checkAndLogResetReason()':
+src/logger.cpp:39:11: error: 'RESET_REASON' does not name a type; did you mean 'ENETRESET'?
+     const RESET_REASON core0 = rtc_get_reset_reason(0);
+           ^~~~~~~~~~~~
+           ENETRESET
+src/logger.cpp:40:11: error: 'RESET_REASON' does not name a type; did you mean 'ENETRESET'?
+     const RESET_REASON core1 = rtc_get_reset_reason(1);
+           ^~~~~~~~~~~~
+           ENETRESET
+src/logger.cpp:41:9: error: 'core0' was not declared in this scope
+     if (core0 == RTCWDT_RTC_RESET || core0 == TGWDT_CPU_RESET || core1 == RTCWDT_RTC_RESET || core1 == TGWDT_CPU_RESET) {
+         ^~~~~
+src/logger.cpp:41:9: note: suggested alternative: 'cfree'
+     if (core0 == RTCWDT_RTC_RESET || core0 == TGWDT_CPU_RESET || core1 == RTCWDT_RTC_RESET || core1 == TGWDT_CPU_RESET) {
+         ^~~~~
+         cfree
+src/logger.cpp:41:18: error: 'RTCWDT_RTC_RESET' was not declared in this scope
+     if (core0 == RTCWDT_RTC_RESET || core0 == TGWDT_CPU_RESET || core1 == RTCWDT_RTC_RESET || core1 == TGWDT_CPU_RESET) {
+                  ^~~~~~~~~~~~~~~~
+src/logger.cpp:41:47: error: 'TGWDT_CPU_RESET' was not declared in this scope
+     if (core0 == RTCWDT_RTC_RESET || core0 == TGWDT_CPU_RESET || core1 == RTCWDT_RTC_RESET || core1 == TGWDT_CPU_RESET) {
+                                               ^~~~~~~~~~~~~~~
+src/logger.cpp:41:66: error: 'core1' was not declared in this scope
+     if (core0 == RTCWDT_RTC_RESET || core0 == TGWDT_CPU_RESET || core1 == RTCWDT_RTC_RESET || core1 == TGWDT_CPU_RESET) {
+                                                                  ^~~~~
+src/logger.cpp:41:66: note: suggested alternative: 'cfree'
+     if (core0 == RTCWDT_RTC_RESET || core0 == TGWDT_CPU_RESET || core1 == RTCWDT_RTC_RESET || core1 == TGWDT_CPU_RESET) {
+                                                                  ^~~~~
+                                                                  cfree
+*** [.pio\build\esp32dev\src\logger.cpp.o] Error 1
+========================= [FAILED] Took 10.90 seconds =========================

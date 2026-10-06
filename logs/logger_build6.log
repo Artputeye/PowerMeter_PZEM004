@@ -1,0 +1,39 @@
+Processing esp32dev (platform: espressif32@~6.0.0; board: esp32dev; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32dev.html
+PLATFORM: Espressif 32 (6.0.1) > Espressif ESP32 Dev Module
+HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20006.221224 (2.0.6) 
+ - tool-esptoolpy @ 1.40400.0 (4.4.0) 
+ - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- WiFiManager @ 2.0.17
+|-- ArduinoJson @ 7.4.2
+|-- ESPAsyncWebServer @ 3.6.0
+|-- AsyncTCP @ 3.4.9
+|-- PZEM-004T-v30 @ 1.1.2
+|-- PubSubClient @ 2.8.0
+|-- ESPmDNS @ 2.0.0
+|-- LittleFS @ 2.0.0
+|-- Update @ 2.0.0
+|-- WiFi @ 2.0.0
+Building in release mode
+Compiling .pio\build\esp32dev\src\logger.cpp.o
+Compiling .pio\build\esp32dev\src\main.cpp.o
+src/logger.cpp:1:20: warning: extra tokens at end of #include directive
+ #include "logger.h"\n\nnamespace {\nconstexpr const char* LOG_FILE_PATH = "/system_log.txt";\nconstexpr size_t MAX_LOG_SIZE_BYTES = 10 * 1024;\n}\n\nvoid writeLog(const String& level, const String& message)\n{\n    if (FILESYSTEM.exists(LOG_FILE_PATH)) {\n        File checkFile = FILESYSTEM.open(LOG_FILE_PATH, FILE_READ);\n        if (checkFile) {\n            const size_t size = checkFile.size();\n            checkFile.close();\n            if (size >= MAX_LOG_SIZE_BYTES) FILESYSTEM.remove(LOG_FILE_PATH);\n        }\n    }\n\n    File logFile = FILESYSTEM.open(LOG_FILE_PATH, FILE_APPEND);\n    if (!logFile) return;\n    logFile.printf("[%lus] [%s] %s\\n", millis() / 1000UL, level.c_str(), message.c_str());\n    logFile.close();\n}\n\nvoid logger_init() {}\n\nvoid displayLogs()\n{\n    if (!FILESYSTEM.exists(LOG_FILE_PATH)) { Serial.println(F("[Logger] No log history")); return; }\n    File logFile = FILESYSTEM.open(LOG_FILE_PATH, FILE_READ);\n    if (!logFile) { Serial.println(F("[Logger] Failed to open log history")); return; }\n    while (logFile.available()) Serial.write(logFile.read());\n    logFile.close();\n}\n\nvoid checkAndLogResetReason()\n{\n    const RESET_REASON core0 = rtc_get_reset_reason(0);\n    const RESET_REASON core1 = rtc_get_reset_reason(1);\n    if (core0 == RTCWDT_RTC_RESET || core0 == TGWDT_CPU_RESET || core1 == RTCWDT_RTC_RESET || core1 == TGWDT_CPU_RESET) {\n        writeLog("CRITICAL", "Watchdog reset: Core0=" + String(core0) + " Core1=" + String(core1) + " FreeHeap=" + String(ESP.getFreeHeap()));\n    }\n}\n\nvoid clearLogHistory()\n{\n    if (FILESYSTEM.exists(LOG_FILE_PATH)) FILESYSTEM.remove(LOG_FILE_PATH);\n}\n
+                    ^
+Linking .pio\build\esp32dev\firmware.elf
+c:/users/art_puteye/.platformio/packages/toolchain-xtensa-esp32/bin/../lib/gcc/xtensa-esp32-elf/8.4.0/../../../../xtensa-esp32-elf/bin/ld.exe: .pio\build\esp32dev\src\main.cpp.o:(.literal._Z5setupv+0x38): undefined reference to `logger_init()'
+c:/users/art_puteye/.platformio/packages/toolchain-xtensa-esp32/bin/../lib/gcc/xtensa-esp32-elf/8.4.0/../../../../xtensa-esp32-elf/bin/ld.exe: .pio\build\esp32dev\src\main.cpp.o: in function `setup()':
+D:\@Project\PowerMeter_PZEM004/src/main.cpp:21: undefined reference to `logger_init()'
+collect2.exe: error: ld returned 1 exit status
+*** [.pio\build\esp32dev\firmware.elf] Error 1
+========================= [FAILED] Took 13.32 seconds =========================

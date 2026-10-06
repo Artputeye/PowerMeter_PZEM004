@@ -1,4 +1,4 @@
 #pragma once
-#include <Arduino.h>
+#include "config.h"
 void setupWebServer();
 String getContentType(const String& filename);

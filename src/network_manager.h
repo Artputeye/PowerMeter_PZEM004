@@ -1,5 +1,5 @@
 #pragma once
-#include <Arduino.h>
+#include "config.h"
 void network_setup();
 void keepWiFiAlive();
 void apModeCheck();

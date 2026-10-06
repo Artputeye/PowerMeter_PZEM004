@@ -1,5 +1,5 @@
 #pragma once
-#include <Arduino.h>
+#include "config.h"
 void ws_init();
 void wsProcess();
 void notifyClients();

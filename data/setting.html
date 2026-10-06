@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -116,6 +116,20 @@
               <label class="input-sublabel">
                 <span>FT Charge (THB/kWh)</span>
                 <input class="schedule-input" type="number" id="ft" step="0.0001" placeholder="0.3972" />
+              </label>
+            </div>
+          </article>
+
+          <article class="setting-card">
+            <h3 class="setting-label">Energy Reset Schedule</h3>
+            <div class="setting-row">
+              <label class="input-sublabel">
+                <span>Daily Reset Time</span>
+                <input class="schedule-input" type="time" id="DailyResetTime" value="00:00" />
+              </label>
+              <label class="input-sublabel">
+                <span>Monthly Reset Day</span>
+                <input class="schedule-input" type="number" id="MonthlyResetDay" min="1" max="28" step="1" placeholder="1" />
               </label>
             </div>
           </article>

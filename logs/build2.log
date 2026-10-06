@@ -1,0 +1,332 @@
+Processing esp32dev (platform: espressif32@~6.0.0; board: esp32dev; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32dev.html
+PLATFORM: Espressif 32 (6.0.1) > Espressif ESP32 Dev Module
+HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20006.221224 (2.0.6) 
+ - tool-esptoolpy @ 1.40400.0 (4.4.0) 
+ - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- WiFiManager @ 2.0.17
+|-- ArduinoJson @ 7.4.2
+|-- ESPAsyncWebServer @ 3.6.0
+|-- AsyncTCP @ 3.4.9
+|-- PZEM-004T-v30 @ 1.1.2
+|-- PubSubClient @ 2.8.0
+|-- ESPmDNS @ 2.0.0
+|-- LittleFS @ 2.0.0
+|-- Update @ 2.0.0
+|-- WiFi @ 2.0.0
+Building in release mode
+Compiling .pio\build\esp32dev\src\app_main.cpp.o
+Compiling .pio\build\esp32dev\src\config.cpp.o
+Compiling .pio\build\esp32dev\src\energy_history.cpp.o
+Compiling .pio\build\esp32dev\src\expense_manager.cpp.o
+Compiling .pio\build\esp32dev\src\ha_integration.cpp.o
+Compiling .pio\build\esp32dev\src\http_server.cpp.o
+Compiling .pio\build\esp32dev\src\logger.cpp.o
+Compiling .pio\build\esp32dev\src\main.cpp.o
+Compiling .pio\build\esp32dev\src\network_manager.cpp.o
+Compiling .pio\build\esp32dev\src\ota_update.cpp.o
+src/ha_integration.cpp:1:28: warning: extra tokens at end of #include directive
+ #include "ha_integration.h"\n#include "config.h"
+                            ^
+Compiling .pio\build\esp32dev\src\pzem_monitor.cpp.o
+Compiling .pio\build\esp32dev\src\storage_manager.cpp.o
+src/logger.cpp:1:20: warning: extra tokens at end of #include directive
+ #include "logger.h"\n#include "config.h"
+                    ^
+src/logger.cpp: In function 'void logger_init()':
+src/logger.cpp:4:5: error: 'Serial' was not declared in this scope
+     Serial.println(F("[Logger] Initialized"));
+     ^~~~~~
+src/logger.cpp:4:20: error: 'F' was not declared in this scope
+     Serial.println(F("[Logger] Initialized"));
+                    ^
+Compiling .pio\build\esp32dev\src\time_sync.cpp.o
+Compiling .pio\build\esp32dev\src\websocket_handler.cpp.o
+*** [.pio\build\esp32dev\src\logger.cpp.o] Error 1
+src/time_sync.cpp:1:23: warning: extra tokens at end of #include directive
+ #include "time_sync.h"\n#include "config.h"
+                       ^
+src/time_sync.cpp: In function 'void NTPbegin()':
+src/time_sync.cpp:5:5: error: 'configTime' was not declared in this scope
+     configTime(7 * 3600, 0, "pool.ntp.org");
+     ^~~~~~~~~~
+src/time_sync.cpp:6:5: error: 'Serial' was not declared in this scope
+     Serial.println(F("[NTP] Time sync started"));
+     ^~~~~~
+src/time_sync.cpp:6:20: error: 'F' was not declared in this scope
+     Serial.println(F("[NTP] Time sync started"));
+                    ^
+*** [.pio\build\esp32dev\src\time_sync.cpp.o] Error 1
+In file included from src/config.cpp:2:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/app_main.cpp:2:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/energy_history.h:2,
+                 from src/energy_history.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/ha_integration.h:2,
+                 from src/ha_integration.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/expense_manager.h:2,
+                 from src/expense_manager.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/http_server.h:2,
+                 from src/http_server.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/main.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/network_manager.h:2,
+                 from src/network_manager.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/ota_update.cpp:2:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/storage_manager.h:3,
+                 from src/storage_manager.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/pzem_monitor.h:2,
+                 from src/pzem_monitor.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+In file included from src/websocket_handler.h:2,
+                 from src/websocket_handler.cpp:1:
+src/config.h:61:26: error: stray '\' in program
+ extern String deviceName;\n
+                          ^
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/app_main.cpp: In function 'void app_setup()':
+src/app_main.cpp:7:5: error: 'pzem_init' was not declared in this scope
+     pzem_init();
+     ^~~~~~~~~
+src/app_main.cpp:7:5: note: suggested alternative: 'pbuf_init'
+     pzem_init();
+     ^~~~~~~~~
+     pbuf_init
+src/app_main.cpp:8:5: error: 'storage_init' was not declared in this scope
+     storage_init();
+     ^~~~~~~~~~~~
+src/app_main.cpp:8:5: note: suggested alternative: '_lock_init'
+     storage_init();
+     ^~~~~~~~~~~~
+     _lock_init
+src/app_main.cpp:9:5: error: 'energyHistoryInit' was not declared in this scope
+     energyHistoryInit();
+     ^~~~~~~~~~~~~~~~~
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/app_main.cpp:9:5: note: suggested alternative: 'energyHistoryUpdate'
+     energyHistoryInit();
+     ^~~~~~~~~~~~~~~~~
+     energyHistoryUpdate
+src/app_main.cpp:10:5: error: 'setupWebServer' was not declared in this scope
+     setupWebServer();
+     ^~~~~~~~~~~~~~
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/app_main.cpp:10:5: note: suggested alternative: 'AsyncWebServer'
+     setupWebServer();
+     ^~~~~~~~~~~~~~
+     AsyncWebServer
+src/app_main.cpp: In function 'void app_loop()':
+src/app_main.cpp:15:5: error: 'pzem_update' was not declared in this scope
+     pzem_update();
+     ^~~~~~~~~~~
+In file included from src/expense_manager.cpp:1:
+src/expense_manager.h:19:32: error: 'ExpenseSettings' does not name a type; did you mean 'S_resetting'?
+ bool expenseSaveSettings(const ExpenseSettings& settings);
+                                ^~~~~~~~~~~~~~~
+                                S_resetting
+src/app_main.cpp:15:5: note: suggested alternative: 'R_update'
+     pzem_update();
+     ^~~~~~~~~~~
+     R_update
+src/expense_manager.h:20:7: error: 'ExpenseSettings' does not name a type; did you mean 'expenseSaveSettings'?
+ const ExpenseSettings& getExpenseSettings();
+       ^~~~~~~~~~~~~~~
+       expenseSaveSettings
+src/expense_manager.cpp:7:1: error: 'ExpenseSettings' does not name a type; did you mean 'expenseSaveSettings'?
+ ExpenseSettings settings = {200.0f, 3.0000f, 400.0f, 4.1584f, 4.3583f, 450.0f, 0.3972f, 38.22f, 7.0f, "00:00", 1};
+ ^~~~~~~~~~~~~~~
+ expenseSaveSettings
+src/expense_manager.cpp: In function 'bool {anonymous}::loadSettings()':
+src/expense_manager.cpp:14:5: error: 'settings' was not declared in this scope
+     settings.unitCost1 = doc["UnitCost1"] | 200.0f;
+     ^~~~~~~~
+src/expense_manager.cpp:14:5: note: suggested alternative: 'sbttons'
+     settings.unitCost1 = doc["UnitCost1"] | 200.0f;
+     ^~~~~~~~
+     sbttons
+src/expense_manager.cpp: In function 'void {anonymous}::writeSettings(ArduinoJson::V742PB22::JsonDocument&)':
+src/expense_manager.cpp:47:24: error: 'settings' was not declared in this scope
+     doc["UnitCost1"] = settings.unitCost1;
+                        ^~~~~~~~
+src/expense_manager.cpp:47:24: note: suggested alternative: 'sbttons'
+     doc["UnitCost1"] = settings.unitCost1;
+                        ^~~~~~~~
+                        sbttons
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/expense_manager.cpp: At global scope:
+src/expense_manager.cpp:65:32: error: 'ExpenseSettings' does not name a type; did you mean 'expenseSaveSettings'?
+ bool expenseSaveSettings(const ExpenseSettings& incoming) {
+                                ^~~~~~~~~~~~~~~
+                                expenseSaveSettings
+src/expense_manager.cpp: In function 'bool expenseSaveSettings(const int&)':
+src/expense_manager.cpp:66:5: error: 'settings' was not declared in this scope
+     settings = incoming;
+     ^~~~~~~~
+src/expense_manager.cpp:66:5: note: suggested alternative: 'sbttons'
+     settings = incoming;
+     ^~~~~~~~
+     sbttons
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/expense_manager.cpp: At global scope:
+src/expense_manager.cpp:73:7: error: 'ExpenseSettings' does not name a type; did you mean 'expenseSaveSettings'?
+ const ExpenseSettings& getExpenseSettings() {
+       ^~~~~~~~~~~~~~~
+       expenseSaveSettings
+src/expense_manager.cpp: In function 'float calculateProgressiveGridCost(float)':
+src/expense_manager.cpp:80:40: error: 'settings' was not declared in this scope
+     const float tier1Limit = max(0.0f, settings.unitCost1);
+                                        ^~~~~~~~
+src/expense_manager.cpp:80:40: note: suggested alternative: 'sbttons'
+     const float tier1Limit = max(0.0f, settings.unitCost1);
+                                        ^~~~~~~~
+                                        sbttons
+src/expense_manager.cpp: In function 'float calculateEstimatedBill(float)':
+src/expense_manager.cpp:95:74: error: 'settings' was not declared in this scope
+     const float subtotal = calculateProgressiveGridCost(units) + units * settings.ft + settings.serviceFee;
+                                                                          ^~~~~~~~
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/expense_manager.cpp:95:74: note: suggested alternative: 'sbttons'
+     const float subtotal = calculateProgressiveGridCost(units) + units * settings.ft + settings.serviceFee;
+                                                                          ^~~~~~~~
+                                                                          sbttons
+src/main.cpp: In function 'void setup()':
+src/main.cpp:33:5: error: 'app_setup' was not declared in this scope
+     app_setup();
+     ^~~~~~~~~
+src/main.cpp:33:5: note: suggested alternative: 'app_loop'
+     app_setup();
+     ^~~~~~~~~
+     app_loop
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+In file included from src/pzem_monitor.cpp:1:
+src/pzem_monitor.h:14:8: error: 'PzemData' does not name a type
+ extern PzemData pzemData;
+        ^~~~~~~~
+src/pzem_monitor.h:18:7: error: 'PzemData' does not name a type
+ const PzemData& getPzemData();
+       ^~~~~~~~
+src/pzem_monitor.cpp:5:1: error: 'PzemData' does not name a type
+ PzemData pzemData;
+ ^~~~~~~~
+src/pzem_monitor.cpp: In function 'void pzem_update()':
+src/pzem_monitor.cpp:14:5: error: 'PzemData' was not declared in this scope
+     PzemData next;
+     ^~~~~~~~
+src/pzem_monitor.cpp:15:5: error: 'next' was not declared in this scope
+     next.voltage = pzem.voltage();
+     ^~~~
+src/pzem_monitor.cpp:15:5: note: suggested alternative:
+In file included from c:\users\art_puteye\.platformio\packages\toolchain-xtensa-esp32\xtensa-esp32-elf\include\c++\8.4.0\bits\stl_algobase.h:66,
+                 from c:\users\art_puteye\.platformio\packages\toolchain-xtensa-esp32\xtensa-esp32-elf\include\c++\8.4.0\algorithm:61,
+                 from C:/Users/Art_Puteye/.platformio/packages/framework-arduinoespressif32@3.20006.221224/cores/esp32/Arduino.h:162,
+                 from src/config.h:3,
+                 from src/pzem_monitor.h:2,
+                 from src/pzem_monitor.cpp:1:
+c:\users\art_puteye\.platformio\packages\toolchain-xtensa-esp32\xtensa-esp32-elf\include\c++\8.4.0\bits\stl_iterator_base_funcs.h:213:5: note:   'std::next'
+     next(_InputIterator __x, typename
+     ^~~~
+src/pzem_monitor.cpp:23:5: error: 'pzemData' was not declared in this scope
+     pzemData = next;
+     ^~~~~~~~
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+src/pzem_monitor.cpp:23:5: note: suggested alternative: 'pzem'
+     pzemData = next;
+     ^~~~~~~~
+     pzem
+src/pzem_monitor.cpp: At global scope:
+src/pzem_monitor.cpp:32:7: error: 'PzemData' does not name a type
+ const PzemData& getPzemData()
+       ^~~~~~~~
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+*** [.pio\build\esp32dev\src\config.cpp.o] Error 1
+src/config.h:61:27: error: 'n' does not name a type; did you mean 'yn'?
+ extern String deviceName;\n
+                           ^
+                           yn
+*** [.pio\build\esp32dev\src\app_main.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\energy_history.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\ota_update.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\ha_integration.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\main.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\pzem_monitor.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\network_manager.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\expense_manager.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\http_server.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\storage_manager.cpp.o] Error 1
+*** [.pio\build\esp32dev\src\websocket_handler.cpp.o] Error 1
+========================== [FAILED] Took 7.16 seconds ==========================

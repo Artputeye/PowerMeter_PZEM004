@@ -1,0 +1,79 @@
+Processing esp32dev (platform: espressif32@~6.0.0; board: esp32dev; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32dev.html
+PLATFORM: Espressif 32 (6.0.1) > Espressif ESP32 Dev Module
+HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20006.221224 (2.0.6) 
+ - tool-esptoolpy @ 1.40400.0 (4.4.0) 
+ - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- WiFiManager @ 2.0.17
+|-- ArduinoJson @ 7.4.2
+|-- ESPAsyncWebServer @ 3.6.0
+|-- AsyncTCP @ 3.4.9
+|-- PZEM-004T-v30 @ 1.1.2
+|-- PubSubClient @ 2.8.0
+|-- ESPmDNS @ 2.0.0
+|-- LittleFS @ 2.0.0
+|-- Update @ 2.0.0
+|-- WiFi @ 2.0.0
+Building in release mode
+Compiling .pio\build\esp32dev\src\app_main.cpp.o
+Compiling .pio\build\esp32dev\src\config.cpp.o
+Compiling .pio\build\esp32dev\src\energy_history.cpp.o
+Compiling .pio\build\esp32dev\src\expense_manager.cpp.o
+Compiling .pio\build\esp32dev\src\ha_integration.cpp.o
+Compiling .pio\build\esp32dev\src\http_server.cpp.o
+Compiling .pio\build\esp32dev\src\logger.cpp.o
+Compiling .pio\build\esp32dev\src\main.cpp.o
+Compiling .pio\build\esp32dev\src\network_manager.cpp.o
+Compiling .pio\build\esp32dev\src\ota_update.cpp.o
+src/ha_integration.cpp:1:28: warning: extra tokens at end of #include directive
+ #include "ha_integration.h"\n#include "config.h"
+                            ^
+Compiling .pio\build\esp32dev\src\pzem_monitor.cpp.o
+Compiling .pio\build\esp32dev\src\storage_manager.cpp.o
+src/logger.cpp:1:20: warning: extra tokens at end of #include directive
+ #include "logger.h"\n#include "config.h"
+                    ^
+src/logger.cpp: In function 'void logger_init()':
+src/logger.cpp:4:5: error: 'Serial' was not declared in this scope
+     Serial.println(F("[Logger] Initialized"));
+     ^~~~~~
+src/logger.cpp:4:20: error: 'F' was not declared in this scope
+     Serial.println(F("[Logger] Initialized"));
+                    ^
+Compiling .pio\build\esp32dev\src\time_sync.cpp.o
+Compiling .pio\build\esp32dev\src\websocket_handler.cpp.o
+*** [.pio\build\esp32dev\src\logger.cpp.o] Error 1
+src/time_sync.cpp:1:23: warning: extra tokens at end of #include directive
+ #include "time_sync.h"\n#include "config.h"
+                       ^
+src/time_sync.cpp: In function 'void NTPbegin()':
+src/time_sync.cpp:5:5: error: 'configTime' was not declared in this scope
+     configTime(7 * 3600, 0, "pool.ntp.org");
+     ^~~~~~~~~~
+src/time_sync.cpp:6:5: error: 'Serial' was not declared in this scope
+     Serial.println(F("[NTP] Time sync started"));
+     ^~~~~~
+src/time_sync.cpp:6:20: error: 'F' was not declared in this scope
+     Serial.println(F("[NTP] Time sync started"));
+                    ^
+*** [.pio\build\esp32dev\src\time_sync.cpp.o] Error 1
+src/app_main.cpp: In function 'void app_setup()':
+src/app_main.cpp:10:5: error: 'storage_init' was not declared in this scope
+     storage_init();
+     ^~~~~~~~~~~~
+src/app_main.cpp:10:5: note: suggested alternative: '_lock_init'
+     storage_init();
+     ^~~~~~~~~~~~
+     _lock_init
+*** [.pio\build\esp32dev\src\app_main.cpp.o] Error 1
+========================== [FAILED] Took 9.78 seconds ==========================

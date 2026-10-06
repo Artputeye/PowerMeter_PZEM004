@@ -1,5 +1,5 @@
 #pragma once
-#include <Arduino.h>
+#include "config.h"
 
 struct ExpenseSettings {
     float unitCost1;
@@ -11,6 +11,8 @@ struct ExpenseSettings {
     float ft;
     float serviceFee;
     float vatRate;
+    char dailyResetTime[6];
+    uint8_t monthlyResetDay;
 };
 
 void expenseInit();

@@ -1,20 +1,15 @@
 #include "expense_manager.h"
 #include "config.h"
 #include "energy_history.h"
-#include <ArduinoJson.h>
+#include "storage_manager.h"
 
 namespace {
-ExpenseSettings settings = {200.0f, 3.0000f, 400.0f, 4.1584f, 4.3583f, 450.0f, 0.3972f, 38.22f, 7.0f};
+ExpenseSettings settings = {200.0f, 3.0000f, 400.0f, 4.1584f, 4.3583f, 450.0f, 0.3972f, 38.22f, 7.0f, "00:00", 1};
 
 bool loadSettings() {
-    if (!FILESYSTEM.exists("/expense.json")) return false;
-    File file = FILESYSTEM.open("/expense.json", FILE_READ);
-    if (!file) return false;
-
     JsonDocument doc;
-    const DeserializationError error = deserializeJson(doc, file);
-    file.close();
-    if (error) return false;
+    if (!storage_load_json("/expense.json", doc))
+        return false;
 
     settings.unitCost1 = doc["UnitCost1"] | 200.0f;
     settings.priceCost1 = doc["PriceCost1"] | 3.0000f;
@@ -25,6 +20,8 @@ bool loadSettings() {
     settings.ft = doc["ft"] | 0.3972f;
     settings.serviceFee = doc["ServiceFee"] | 38.22f;
     settings.vatRate = doc["VatRate"] | 7.0f;
+    strlcpy(settings.dailyResetTime, doc["DailyResetTime"] | "00:00", sizeof(settings.dailyResetTime));
+    settings.monthlyResetDay = doc["MonthlyResetDay"] | 1;
 
     if (!isfinite(settings.unitCost1) || settings.unitCost1 < 0) settings.unitCost1 = 200.0f;
     if (!isfinite(settings.priceCost1) || settings.priceCost1 < 0) settings.priceCost1 = 3.0000f;
@@ -35,7 +32,29 @@ bool loadSettings() {
     if (!isfinite(settings.ft)) settings.ft = 0.3972f;
     if (!isfinite(settings.serviceFee) || settings.serviceFee < 0) settings.serviceFee = 38.22f;
     if (!isfinite(settings.vatRate) || settings.vatRate < 0 || settings.vatRate > 100) settings.vatRate = 7.0f;
+    if (settings.dailyResetTime[2] != ':' ||
+        settings.dailyResetTime[0] < '0' || settings.dailyResetTime[0] > '2' ||
+        settings.dailyResetTime[1] < '0' || settings.dailyResetTime[1] > '9' ||
+        settings.dailyResetTime[3] < '0' || settings.dailyResetTime[3] > '5' ||
+        settings.dailyResetTime[4] < '0' || settings.dailyResetTime[4] > '9') {
+        strlcpy(settings.dailyResetTime, "00:00", sizeof(settings.dailyResetTime));
+    }
+    if (settings.monthlyResetDay < 1 || settings.monthlyResetDay > 28) settings.monthlyResetDay = 1;
     return true;
+}
+
+void writeSettings(JsonDocument& doc) {
+    doc["UnitCost1"] = settings.unitCost1;
+    doc["PriceCost1"] = settings.priceCost1;
+    doc["UnitCost2"] = settings.unitCost2;
+    doc["PriceCost2"] = settings.priceCost2;
+    doc["PriceCost3"] = settings.priceCost3;
+    doc["UnitSolar"] = settings.unitSolar;
+    doc["ft"] = settings.ft;
+    doc["ServiceFee"] = settings.serviceFee;
+    doc["VatRate"] = settings.vatRate;
+    doc["DailyResetTime"] = settings.dailyResetTime;
+    doc["MonthlyResetDay"] = settings.monthlyResetDay;
 }
 }
 
@@ -47,21 +66,8 @@ bool expenseSaveSettings(const ExpenseSettings& incoming) {
     settings = incoming;
 
     JsonDocument doc;
-    doc["UnitCost1"] = settings.unitCost1;
-    doc["PriceCost1"] = settings.priceCost1;
-    doc["UnitCost2"] = settings.unitCost2;
-    doc["PriceCost2"] = settings.priceCost2;
-    doc["PriceCost3"] = settings.priceCost3;
-    doc["UnitSolar"] = settings.unitSolar;
-    doc["ft"] = settings.ft;
-    doc["ServiceFee"] = settings.serviceFee;
-    doc["VatRate"] = settings.vatRate;
-
-    File file = FILESYSTEM.open("/expense.json", FILE_WRITE);
-    if (!file) return false;
-    const size_t written = serializeJson(doc, file);
-    file.close();
-    return written > 0;
+    writeSettings(doc);
+    return storage_save_json("/expense.json", doc);
 }
 
 const ExpenseSettings& getExpenseSettings() {
@@ -101,15 +107,7 @@ void buildExpenseJson(String& out) {
     const float todayEnergy = max(0.0f, historyDoc["daily"][29] | 0.0f);
 
     JsonDocument doc;
-    doc["UnitCost1"] = settings.unitCost1;
-    doc["PriceCost1"] = settings.priceCost1;
-    doc["UnitCost2"] = settings.unitCost2;
-    doc["PriceCost2"] = settings.priceCost2;
-    doc["PriceCost3"] = settings.priceCost3;
-    doc["UnitSolar"] = settings.unitSolar;
-    doc["ft"] = settings.ft;
-    doc["ServiceFee"] = settings.serviceFee;
-    doc["VatRate"] = settings.vatRate;
+    writeSettings(doc);
     doc["energyToday"] = todayEnergy;
     doc["energyMonth"] = monthlyEnergy;
     doc["estimatedBill"] = calculateEstimatedBill(monthlyEnergy);

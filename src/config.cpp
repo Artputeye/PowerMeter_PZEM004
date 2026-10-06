@@ -35,4 +35,5 @@ char AUTH_USER[10] = "admin";
 char AUTH_PASS[10] = "12345678";
 
 bool isWifiApMode = false;
+bool isIpConfigStatic = false;
 String deviceName = "PowerMeter-PZEM004";

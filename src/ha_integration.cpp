@@ -1,4 +1,4 @@
-#include "ha_integration.h"
+#include "ha_integration.h"\n#include "config.h"\n#include "logger.h"
 #include "pzem_monitor.h"
 #include "expense_manager.h"
 

@@ -1,0 +1,147 @@
+﻿/* File List Page */
+.dashboard.filelist-page {
+  width: min(680px, 100%);
+  max-width: 680px;
+  min-width: 0;
+  font-family: "DM Sans", sans-serif;
+}
+
+.filelist-panel {
+  width: 100%;
+  min-width: 0;
+}
+
+.filelist-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filelist-count {
+  font-size: 14px;
+  color: var(--text-secondary, #777);
+}
+
+.filelist-refresh {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.filelist-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+#fileTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#fileTable th,
+#fileTable td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color, #e5e5e5);
+}
+
+#fileTable th {
+  font-weight: 600;
+}
+
+.file-name {
+  word-break: break-word;
+}
+
+.file-size,
+.file-date {
+  white-space: nowrap;
+}
+
+.file-type-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.file-delete {
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 600px) {
+  .dashboard.filelist-page {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .filelist-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  #fileTable th,
+  #fileTable td {
+    padding: 8px;
+  }
+}
+/* Theme-matched refresh action */
+.refresh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(35, 185, 154, .28) !important;
+  border-radius: 5px !important;
+  background: #fff !important;
+  color: var(--ink) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  box-shadow: 0 2px 6px rgba(29, 84, 82, .10);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.refresh-button:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(29, 84, 82, .14);
+}
+
+.refresh-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(29, 84, 82, .10);
+}
+
+.refresh-button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.refresh-button:disabled {
+  opacity: .7;
+  cursor: wait;
+}
+
+
+
+
+#fileTable th:first-child, #fileTable td:first-child {
+  width: 48%;
+  min-width: 260px;
+}
+
+
+

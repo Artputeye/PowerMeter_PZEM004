@@ -1,5 +1,5 @@
 #include "pzem_monitor.h"
-#include "config.h"
+#include "config.h"\n#include "logger.h"
 #include "energy_history.h"
 
 PzemData pzemData;

@@ -1,7 +1,5 @@
 #include "time_sync.h"
-#include <Arduino.h>
-#include <WiFi.h>
-#include <time.h>
+#include "config.h"\n#include "logger.h"
 
 void NTPbegin()
 {
